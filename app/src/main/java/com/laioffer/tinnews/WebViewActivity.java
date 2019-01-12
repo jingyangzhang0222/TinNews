@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuBuilder;
@@ -20,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.laioffer.tinnews.common.TinBasicActivity;
+import com.laioffer.tinnews.common.TinBasicFragment;
 
 public class WebViewActivity extends TinBasicActivity implements PopupMenu.OnMenuItemClickListener{
     public static final String URL = "url";
@@ -111,6 +113,11 @@ public class WebViewActivity extends TinBasicActivity implements PopupMenu.OnMen
                 break;
         }
         return true;
+
+    }
+
+    @Override
+    public void doFragmentTransaction(TinBasicFragment basicFragment) {
 
     }
 
