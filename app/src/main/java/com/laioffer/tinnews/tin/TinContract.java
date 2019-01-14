@@ -8,6 +8,8 @@ import java.util.List;
 public interface TinContract {
     interface View extends MvpContract.View<Presenter> {
         void showNewsCard(List<News> newsList);
+        void onError();
+        void onSavedSuccess();
     }
 
     interface Presenter extends MvpContract.Presenter<View, Model> {
@@ -15,6 +17,8 @@ public interface TinContract {
 
         //8.1
         void saveFavoriteNews(News news);
+        void onError();
+        void onSavedSuccess();
     }
 
 
