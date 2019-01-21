@@ -2,6 +2,7 @@ package com.laioffer.tinnews.save;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,17 +12,20 @@ import android.widget.TextView;
 
 import com.laioffer.tinnews.R;
 import com.laioffer.tinnews.common.TinBasicFragment;
+import com.laioffer.tinnews.common.ViewModelAdapter;
 import com.laioffer.tinnews.mvp.MvpFragment;
 import com.laioffer.tinnews.retrofit.response.News;
 import com.laioffer.tinnews.save.detail.SavedNewsDetailedFragment;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SavedNewsFragment extends MvpFragment<SavedNewsContract.Presenter> implements SavedNewsContract.View {
-    private SavedNewsAdapter savedNewsAdapter;
+
+    private ViewModelAdapter savedNewsAdapter;
     private TextView emptyState;
 
     public static SavedNewsFragment newInstance() {
@@ -34,13 +38,15 @@ public class SavedNewsFragment extends MvpFragment<SavedNewsContract.Presenter> 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved_news, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         emptyState = view.findViewById(R.id.empty_state);
-        savedNewsAdapter = new SavedNewsAdapter(tinFragmentManager);
+        savedNewsAdapter = new ViewModelAdapter();
         recyclerView.setAdapter(savedNewsAdapter);
         return view;
+
     }
 
     @Override
@@ -55,7 +61,12 @@ public class SavedNewsFragment extends MvpFragment<SavedNewsContract.Presenter> 
         } else {
             emptyState.setVisibility(View.GONE);
         }
-        if (newsList != null)
-            savedNewsAdapter.setNewsList(newsList);
+        if (newsList != null) {
+            List<SavedNewsViewModel> models = new LinkedList<>();
+            for (News news : newsList) {
+                models.add(new SavedNewsViewModel(news, tinFragmentManager));
+            }
+            savedNewsAdapter.addViewModels(models);
+        }
     }
 }
