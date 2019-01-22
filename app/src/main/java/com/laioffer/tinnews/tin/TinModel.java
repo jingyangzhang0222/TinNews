@@ -12,7 +12,6 @@ import com.laioffer.tinnews.retrofit.response.News;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -35,8 +34,8 @@ public class TinModel implements TinContract.Model {
         this.presenter = presenter;    }
 
     @Override
-    public void fetchData() {
-        newsRequestApi.getNewsByCountry("us")
+    public void fetchData(String country) {
+        newsRequestApi.getNewsByCountry(country)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(baseResponse -> baseResponse != null && baseResponse.articles != null)
